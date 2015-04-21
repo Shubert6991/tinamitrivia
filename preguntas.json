@@ -1,0 +1,25 @@
+{"preguntas":
+	[
+		{	"pregunta":"esto es una prueba?", 
+			"respuesta1":"si",
+			"respuesta2":"no",
+			"respuesta3":"talvez",
+			"respuesta4": "no se"
+
+			},
+		{
+			"pregunta": "2",
+			"respuesta1" : "1",
+			"respuesta2": "2",
+			"respuesta3":"talvez",
+			"respuesta4": "no se"
+		},
+		{	"pregunta":"esto es una prueba?2", 
+			"respuesta1":"si",
+			"respuesta2":"no",
+			"respuesta3":"talvez",
+			"respuesta4": "no se"
+		}
+	]
+
+}
