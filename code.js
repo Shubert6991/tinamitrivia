@@ -1,33 +1,70 @@
-console.log("test");
+console.log("tinamitrivia")
+function showWrongAnswer(){
+  document.id('error').set('html', 'Respuesta Incorrecta');
+}
+function showScore() {
+	var score = quizMaker.getScore();
 
-$.getJSON('preguntas.json', function(data) {
-	        // var output="<div>";
-	        for (var i in data.preguntas) {
-	            var pregunta =  data.preguntas[i].pregunta;
-	        	var respuesta1 = data.preguntas[i].respuesta1;
-	        	var respuesta2 = data.preguntas[i].respuesta2;
-	        	var respuesta3 = data.preguntas[i].respuesta3;
-	        	var respuesta4 = data.preguntas[i].respuesta4;
+	var el = new Element('h3');
+	el.set('html', 'Gracias por jugar');
+  document.id('resultado').adopt(el);
 
-	        	document.getElementById("placeholder").innerHTML= "<div>" + pregunta + "</div>";
-	        	document.getElementById("placeholder").innerHTML= respuesta1;
-	        }
+	el = new Element('h4');
+	el.set('html', 'Puntuacion: ' + score.numCorrectAnswers + ' de ' + score.numQuestions);
+  document.id('resultado').adopt(el);
 
-	        // output+="</div>";
-	        
-	  });
- // $(document).ready(function(){
- 	// $("div").hide();
-    // do { 
-    	// var x = 0;
-    // 	$("#"+x+"").hide();
-    // 	x++;
-    // }
-    // while( x<1);
-    // if (x == 0) {
-    // 	for (x+1; x > 9 ;x++) {
-    // 		$("#"+x+"").hide();
-    // 		x++;
-    // 	}
-    // }
-// }); 
+	if(score.incorrectAnswers.length > 0) {
+		el = new Element('h4');
+		el.set('html', 'Respuestas Incorrectas:');
+  	document.id('resultado').adopt(el);
+
+		for(var i=0;i<score.incorrectAnswers.length;i++) {
+			var incorrectAnswer = score.incorrectAnswers[i];
+			el = new Element('div');
+			el.set('html', '<b>' +  incorrectAnswer.questionNumber + ': ' + incorrectAnswer.label + '</b>');
+			document.id('resultado').adopt(el);
+
+			el = new Element('div');
+			el.set('html', 'Respuesta Correcta : ' + incorrectAnswer.correctAnswer);
+		  document.id('resultado').adopt(el);
+			el = new Element('div');
+			el.set('html', 'Tu Respuesta : ' + incorrectAnswer.userAnswer);
+		  document.id('resultado').adopt(el);
+
+		}
+	}
+
+}
+var preguntas = [
+	{
+		label : 'What is the capital of Norway ?',
+		options : ['Stockholm', 'Oslo', 'Copenhagen'],
+		answer : ['Oslo'],
+		forceAnswer : true
+    },
+  {	
+		label:"esto es una prueba?", 
+		options:["si", "no", "talvez"],
+		answer: ["si"],
+		forceAnswer: true
+	} 
+    ]
+
+function showAnswerAlert() {
+	document.id('error').set('html', 'Tienes que contestar para seguir jugando');
+}
+function clearErrorBox() {
+  document.id('error').set('html','');
+}
+var quizMaker = new DG.QuizMaker({
+	questions : preguntas,
+	el : 'preguntas',
+  forceCorrectAnswer:false,
+	listeners : {
+	'finish' : showScore,
+	'missinganswer' : showAnswerAlert,
+	'sendanswer' : clearErrorBox,
+  'wrongAnswer' : showWrongAnswer
+	}
+});
+quizMaker.start();
